@@ -38,8 +38,12 @@ router.post('/login', async (req, res) => {
       username: user.Username
     });
   } catch (err) {
-    console.error(err);
-    return res.status(500).json({ message: 'Server error.' });
+    console.error('Login Error:', err);
+    return res.status(500).json({ 
+      message: 'Server error.', 
+      error: err.message,
+      stack: process.env.NODE_ENV === 'development' ? err.stack : undefined 
+    });
   }
 });
 
