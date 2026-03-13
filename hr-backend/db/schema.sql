@@ -1,0 +1,66 @@
+CREATE DATABASE IF NOT EXISTS HRMS;
+USE HRMS;
+
+CREATE TABLE IF NOT EXISTS department (
+  DepId INT AUTO_INCREMENT PRIMARY KEY,
+  DepName VARCHAR(120) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS post (
+  PostID INT AUTO_INCREMENT PRIMARY KEY,
+  DepId INT NOT NULL,
+  PostTitle VARCHAR(120) NOT NULL,
+  CONSTRAINT fk_post_department
+    FOREIGN KEY (DepId) REFERENCES department(DepId)
+    ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS staff (
+  EmployeeID INT AUTO_INCREMENT PRIMARY KEY,
+  PostID INT NOT NULL,
+  FirstName VARCHAR(80) NOT NULL,
+  LastName VARCHAR(80) NOT NULL,
+  Gender VARCHAR(20),
+  DOB DATE,
+  Email VARCHAR(120),
+  Phone VARCHAR(40),
+  Address VARCHAR(200),
+  CONSTRAINT fk_staff_post
+    FOREIGN KEY (PostID) REFERENCES post(PostID)
+    ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS recruitment (
+  RecId INT AUTO_INCREMENT PRIMARY KEY,
+  EmployeeID INT NOT NULL,
+  HireDate DATE,
+  Salary DECIMAL(12,2),
+  Status VARCHAR(40),
+  CONSTRAINT fk_recruitment_staff
+    FOREIGN KEY (EmployeeID) REFERENCES staff(EmployeeID)
+    ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS users (
+  UserID INT AUTO_INCREMENT PRIMARY KEY,
+  EmployeeID INT NOT NULL,
+  Username VARCHAR(60) NOT NULL UNIQUE,
+  Password VARCHAR(255) NOT NULL,
+  CONSTRAINT fk_users_staff
+    FOREIGN KEY (EmployeeID) REFERENCES staff(EmployeeID)
+    ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+INSERT INTO department (DepName) VALUES
+  ('Administration'),
+  ('Nursing'),
+  ('Laboratory'),
+  ('Radiology');
+
+INSERT INTO post (DepId, PostTitle) VALUES
+  (1, 'HR Manager'),
+  (1, 'Receptionist'),
+  (2, 'Head Nurse'),
+  (2, 'Ward Nurse'),
+  (3, 'Lab Technician'),
+  (4, 'Radiographer');
