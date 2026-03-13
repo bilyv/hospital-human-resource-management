@@ -1,6 +1,5 @@
 require('dotenv').config();
 const express = require('express');
-const cors = require('cors');
 const session = require('express-session');
 
 const db = require('./db');
@@ -13,13 +12,6 @@ const { initializeDatabase } = require('./utils/dbInit');
 const app = express();
 
 app.use(express.json());
-
-app.use(
-  cors({
-    origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
-    credentials: true
-  })
-);
 
 app.use(
   session({
@@ -57,7 +49,6 @@ const startServer = async () => {
       console.log('╠════════════════════════════════════════╣');
       console.log(`║ ✓ Server running on port ${port}`.padEnd(42) + '║');
       console.log(`║ ✓ Database connected & initialized     `.padEnd(42) + '║');
-      console.log('║ ✓ CORS enabled for frontend            ║');
       console.log('╚════════════════════════════════════════╝');
       console.log('');
     });

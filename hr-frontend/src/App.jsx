@@ -1,4 +1,4 @@
-﻿import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
 import LoginForm from './components/LoginForm.jsx';
 import StaffForm from './components/StaffForm.jsx';
@@ -7,7 +7,7 @@ import Filters from './components/Filters.jsx';
 import TopBar from './components/TopBar.jsx';
 
 const api = axios.create({
-  baseURL: 'http://localhost:5001/api',
+  baseURL: '/api',
   withCredentials: true
 });
 
@@ -68,9 +68,14 @@ export default function App() {
   }, [user, filterParams]);
 
   const handleLogin = async (values) => {
-    setMessage('');
-    const res = await api.post('/auth/login', values);
-    setUser(res.data);
+    try {
+      setMessage('');
+      const res = await api.post('/auth/login', values);
+      setUser(res.data);
+    } catch (err) {
+      console.error('Login error:', err);
+      setMessage(err.response?.data?.message || 'Login failed. Please check your credentials.');
+    }
   };
 
   const handleLogout = async () => {
