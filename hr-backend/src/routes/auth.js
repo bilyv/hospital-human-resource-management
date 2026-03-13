@@ -1,4 +1,4 @@
-﻿const express = require('express');
+const express = require('express');
 const bcrypt = require('bcrypt');
 const pool = require('../db');
 
@@ -44,9 +44,17 @@ router.post('/login', async (req, res) => {
 });
 
 router.post('/logout', (req, res) => {
-  req.session.destroy(() => {
-    res.clearCookie('hrms.sid');
-    return res.json({ message: 'Logged out.' });
+  req.session.destroy((err) => {
+    if (err) {
+      console.error('Session destroy error:', err);
+    }
+    res.clearCookie('hrms.sid', {
+      httpOnly: true,
+      sameSite: 'lax',
+      secure: false,
+      path: '/'
+    });
+    return res.status(200).json({ message: 'Logged out.' });
   });
 });
 

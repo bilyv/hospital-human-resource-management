@@ -49,16 +49,5 @@ CREATE TABLE IF NOT EXISTS users (
     ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-INSERT INTO department (DepName) VALUES
-  ('Administration'),
-  ('Nursing'),
-  ('Laboratory'),
-  ('Radiology');
-
-INSERT INTO post (DepId, PostTitle) VALUES
-  (1, 'HR Manager'),
-  (1, 'Receptionist'),
-  (2, 'Head Nurse'),
-  (2, 'Ward Nurse'),
-  (3, 'Lab Technician'),
-  (4, 'Radiographer');
+-- No default departments or posts seeded.
+-- Add them through the UI after logging in.
